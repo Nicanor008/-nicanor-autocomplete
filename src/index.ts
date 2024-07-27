@@ -1,18 +1,28 @@
 type SuggestionProvider = (input: string) => Promise<string[]>;
 
+interface AutocompleteOptions {
+  leftIcon?: string;
+  rightIcon?: string;
+  customCSS?: string;
+}
+
 export class Autocomplete {
   private inputElement: HTMLInputElement;
   private suggestions: string[];
   private suggestionProvider: SuggestionProvider;
-  private container: HTMLDivElement | any;
+  private container!: HTMLDivElement;
+  private leftIcon?: string;
+  private rightIcon?: string;
 
-  constructor(inputElement: HTMLInputElement, suggestionProvider: SuggestionProvider) {
+  constructor(inputElement: HTMLInputElement, suggestionProvider: SuggestionProvider, options: AutocompleteOptions = {}) {
     this.inputElement = inputElement;
     this.suggestions = [];
     this.suggestionProvider = suggestionProvider;
+    this.leftIcon = options.leftIcon;
+    this.rightIcon = options.rightIcon;
 
     this.createSuggestionsContainer();
-    this.addStyles();
+    this.addStyles(options.customCSS);
 
     this.inputElement.addEventListener('input', this.onInput.bind(this));
     this.inputElement.addEventListener('blur', this.onBlur.bind(this));
@@ -50,7 +60,25 @@ export class Autocomplete {
     this.suggestions.forEach((suggestion) => {
       const suggestionElement = document.createElement('div');
       suggestionElement.classList.add('autocomplete-suggestion');
-      suggestionElement.textContent = suggestion;
+
+      if (this.leftIcon) {
+        const leftIconElement = document.createElement('img');
+        leftIconElement.src = this.leftIcon;
+        leftIconElement.classList.add('left-icon');
+        suggestionElement.appendChild(leftIconElement);
+      }
+
+      const suggestionText = document.createElement('span');
+      suggestionText.textContent = suggestion;
+      suggestionElement.appendChild(suggestionText);
+
+      if (this.rightIcon) {
+        const rightIconElement = document.createElement('img');
+        rightIconElement.src = this.rightIcon;
+        rightIconElement.classList.add('right-icon');
+        suggestionElement.appendChild(rightIconElement);
+      }
+
       suggestionElement.addEventListener('click', () => {
         this.inputElement.value = suggestion;
         this.clearSuggestions();
@@ -66,7 +94,7 @@ export class Autocomplete {
     this.container.style.display = 'none';
   }
 
-  private addStyles(): void {
+  private addStyles(customCSS?: string): void {
     const style = document.createElement('style');
     style.innerHTML = `
       .autocomplete-suggestions {
@@ -81,12 +109,20 @@ export class Autocomplete {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
       .autocomplete-suggestion {
+        display: flex;
+        align-items: center;
         padding: 8px;
         cursor: pointer;
       }
       .autocomplete-suggestion:hover {
         background: #f0f0f0;
       }
+      .left-icon, .right-icon {
+        width: 20px;
+        height: 20px;
+        margin: 0 8px;
+      }
+      ${customCSS ? customCSS : ''}
     `;
     document.head.appendChild(style);
   }
