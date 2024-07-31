@@ -13,14 +13,14 @@ This is a simple input auto complete/suggestions component
 
 ### Installation
 You can install the package using npm:
-```
+```bash
 npm install nicanor-autocomplete
 ```
 
 ### Usage
 Here’s how to use the Autocomplete class with a simple suggestion provider:
 
-```
+``` Js
 import { Autocomplete } from 'nicanor-autocomplete';
 
 // Example suggestion provider function for sentences and words
@@ -60,7 +60,7 @@ new Autocomplete(inputElement, suggestionProvider);
 With Icons and Custom CSS
 You can also add optional icons to the left and/or right of each suggestion and supply your own CSS for customization:
 
-```
+``` Js
 import { Autocomplete } from 'nicanor-autocomplete';
 
 // Example suggestion provider function for sentences and words
@@ -111,7 +111,7 @@ new Autocomplete(inputElement, suggestionProvider, {
 #### HTML Structure
 Ensure you have an input element in your HTML:
 
-```
+``` html
 <!DOCTYPE html>
 <html lang="en">
 <head>
