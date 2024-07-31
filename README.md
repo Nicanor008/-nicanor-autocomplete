@@ -13,7 +13,7 @@ This is a simple input auto complete/suggestions component
 
 ### Installation
 You can install the package using npm:
-```
+```bash
 npm install nicanor-autocomplete
 ```
 
@@ -111,7 +111,7 @@ new Autocomplete(inputElement, suggestionProvider, {
 #### HTML Structure
 Ensure you have an input element in your HTML:
 
-``` Js
+``` html
 <!DOCTYPE html>
 <html lang="en">
 <head>
